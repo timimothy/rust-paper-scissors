@@ -1,116 +1,82 @@
 use core::fmt;
 use rand::Rng;
-use std::io;
-enum Move {
-    RUST,
-    PAPAER,
-    SCISSORS,
-    NONE,
-}
+use std::io::{self, Stdin};
 
-impl fmt::Display for Move {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        match self {
-            Move::NONE => write!(f, "None"),
-            Move::PAPAER => write!(f, "Paper"),
-            Move::RUST => write!(f, "Rust"),
-            Move::SCISSORS => write!(f, "Scissors"),
-        }
-    }
-}
+mod rps;
+use rps::RockPaperScissors;
 
-struct GameState {
-    player1: Move,
-    player2: Move,
-}
 
-const INPUTS: [&str; 4] = ["r", "p", "s", "c"];
 
 fn main() {
-    println!("Hello, world!");
+    println!("Welcome to Rust, Paper, Scissors!");
 
-    game();
+
+    let mut rps_game = RockPaperScissors::new();
+
+    rps_game.fight();
 }
+// fn game() {
 
-fn game() {
-    let mut game_state: GameState = GameState {
-        player1: Move::NONE,
-        player2: Move::NONE,
-    };
+//     // Initial game state
+//     let mut game_state: RoundState = RoundState {
+//         player1: Move::NONE,
+//         player2: Move::NONE,
+//     };
 
-    let mut user_input = String::new();
-    let stdin = io::stdin(); // We get `Stdin` here.
-    stdin.read_line(&mut user_input).expect("Opps");
+//     let mut user_input = String::new();
+//     let stdin: Stdin = io::stdin(); // We get `Stdin` here.
+//     stdin.read_line(&mut user_input).expect("Opps");
 
-    println!("input {} ", user_input);
+//     println!("input {} ", user_input);
 
-    // This is the game loop.
-    loop {
-        println!("Your move bucko!:");
 
-        while !valid_input(&user_input) {
-            user_input = String::new();
-            stdin.read_line(&mut user_input).expect("Opps");
-            user_input = user_input.as_str().trim().to_string();
-        }
+//     // This is the game loop.
+//     loop {
+//         println!("Your move bucko!:");
 
-        match user_input.as_str().trim() {
-            "c" => break,
-            "r" => game_state.player1 = Move::RUST,
-            "p" => game_state.player1 = Move::PAPAER,
-            "s" => game_state.player1 = Move::SCISSORS,
-            _ => println!("{}", user_input),
-        }
+//         while !valid_input(&user_input) {
+//             user_input = String::new();
+//             stdin.read_line(&mut user_input).expect("Opps");
+//             user_input = user_input.as_str().trim().to_string();
+//         }
 
-        user_input = String::new();
+//         match user_input.as_str().trim() {
+//             "c" => break,
+//             "r" => game_state.player1 = Move::RUST,
+//             "p" => game_state.player1 = Move::PAPAER,
+//             "s" => game_state.player1 = Move::SCISSORS,
+//             _ => println!("{}", user_input),
+//         }
 
-        game_state.player2 = get_random_move();
+//         user_input = String::new();
 
-        println!("Player Move {}", game_state.player1);
-        println!("Computer Move {}", game_state.player2);
+//         game_state.player2 = get_random_move();
 
-        let winner = get_winner(&game_state);
+//         println!("Player Move {}", game_state.player1);
+//         println!("Computer Move {}", game_state.player2);
 
-        println!("Winner is {}", winner);
-    }
-}
+//         let winner = get_winner(&game_state);
 
-fn valid_input(input: &str) -> bool {
-    let result = INPUTS.contains(&input);
-    println!("valid {}", result);
-    return result;
-}
+//         println!("Winner is {}", winner);
+//     }
+// }
 
-fn get_random_move() -> Move {
-    let mut rng = rand::thread_rng();
-    match rng.gen_range(1..3) {
-        1 => Move::PAPAER,
-        2 => Move::RUST,
-        3 => Move::SCISSORS,
-        _ => Move::NONE,
-    }
-}
+// fn valid_input(input: &str) -> bool {
+//     let result = INPUTS.contains(&input);
+//     println!("valid {}", result);
+//     return result;
+// }
 
-fn get_winner(game: &GameState) -> i32 {
-    match game.player1 {
-        Move::PAPAER => match game.player2 {
-            Move::PAPAER => 0,
-            Move::RUST => 1,
-            Move::SCISSORS => 2,
-            _ => 0,
-        },
-        Move::RUST => match game.player2 {
-            Move::RUST => 0,
-            Move::SCISSORS => 1,
-            Move::PAPAER => 2,
-            _ => 0,
-        },
-        Move::SCISSORS => match game.player2 {
-            Move::SCISSORS => 0,
-            Move::PAPAER => 1,
-            Move::RUST => 2,
-            _ => 0,
-        },
-        _ => panic!("Panic"),
-    }
-}
+// fn get_random_move() -> Move {
+//     let mut rng = rand::thread_rng();
+//     match rng.gen_range(1..3) {
+//         1 => Move::PAPAER,
+//         2 => Move::RUST,
+//         3 => Move::SCISSORS,
+//         _ => Move::NONE,
+//     }
+// }
+
+// fn get_winner(game: &RoundState) -> i32 {
+//   
+// }
